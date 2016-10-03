@@ -19,10 +19,11 @@ def getExtensions(group):
             funcDict.setdefault(y.attrs[0], []).append(y)
 
     extensions = {}
-    for getEx in funcDict['getExt']:
-        for handle in funcDict[getEx.load()(True)]:
-            if handle.module_name == getEx.module_name:
-                for extension in getEx.load()():
-                    extensions[extension] = handle.load()
+    for funcName in (oName for oName in order if oName.startswith("get")):
+        for getEx in funcDict[funcName]:
+            for handle in funcDict[getEx.load()(True)]:
+                if handle.module_name == getEx.module_name:
+                    for extension in getEx.load()():
+                        extensions[extension] = handle.load()
 
     return extensions
